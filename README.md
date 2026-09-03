@@ -21,6 +21,7 @@ mitigations.
 - [Installation](#installation)
 - [Quickstart](#quickstart)
 - [Methodology](#methodology)
+- [Deployment](#deployment)
 - [Ethics, limitations & mitigations](#ethics-limitations--mitigations)
 - [Reproducibility](#reproducibility)
 - [Roadmap](#roadmap)
@@ -82,9 +83,17 @@ network-anomaly-detection/
 │   ├── train.py           # train/compare models, save best + metrics + figures
 │   ├── mitigations.py     # PSI drift + Fuzzers threshold/SMOTE experiments
 │   └── predict.py         # score new connections with the trained detector
+├── app/                   # FastAPI service (Step 8)
+│   ├── main.py            # /predict, /health, /model-info + web UI
+│   ├── schemas.py         # request/response models
+│   └── static/index.html  # single-page UI
+├── tests/                 # pytest API tests
 ├── models/                # saved artifacts (see models/README.md)
-├── figures/               # all generated plots
-└── reports/               # metrics JSONs + the full written report (.docx)
+├── figures/               # all generated plots + demo/
+├── reports/               # metrics JSONs + the full written report (.docx)
+├── Dockerfile
+├── config.yaml
+└── DEPLOYMENT.md          # deployment + MLOps guide
 ```
 
 ## Installation
@@ -132,6 +141,21 @@ The project follows the ML lifecycle end-to-end; the full write-up is in
 
 ![SHAP summary](figures/fe_shap_summary.png)
 
+## Deployment
+
+The model is served by a **FastAPI** app with a `/predict` endpoint and a small
+web UI. Full guide: [`DEPLOYMENT.md`](DEPLOYMENT.md).
+
+```bash
+# local
+uvicorn app.main:app --port 8000        # then open http://localhost:8000
+
+# docker
+docker build -t nad-detector . && docker run -p 8000:8000 nad-detector
+```
+
+![Demo](figures/demo/demo.gif)
+
 ## Ethics, limitations & mitigations
 
 Network data has no demographic attributes, so fairness is reframed as **detection
@@ -159,7 +183,7 @@ parity across attack families**. The audit surfaced a real blind spot:
 
 ## Roadmap
 
-- Local deployment via FastAPI (Step 8) with a `/predict` endpoint.
+- ✅ Local deployment via FastAPI with a `/predict` endpoint and web UI (see [DEPLOYMENT.md](DEPLOYMENT.md)).
 - Drift monitoring on connection-counter features; scheduled retraining.
 - Adversarial hardening (adversarial training, ensembles) and explanation-drift alerts.
 

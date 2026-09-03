@@ -1,0 +1,27 @@
+# Config-driven settings for training and serving.
+# Serving reads these via environment variables (see app/main.py, Dockerfile).
+
+data:
+  train: data/UNSW_NB15_training-set.csv
+  test:  data/UNSW_NB15_testing-set.csv
+
+paths:
+  models:  models
+  figures: figures
+  reports: reports
+
+training:
+  random_state: 42
+  # primary selection metric order: recall (attack), then PR-AUC
+  select_by: [recall, pr_auc]
+
+serving:
+  model_name: best_model     # best_model (Random Forest) | xgboost
+  threshold: 0.5             # lower to 0.35 to prioritise recall on weak classes
+  port: 8000
+
+monitoring:
+  # features to watch for concept drift (highest PSI at evaluation time)
+  drift_watch: [ct_src_ltm, ct_src_dport_ltm, ct_dst_src_ltm, ct_dst_ltm, rate]
+  psi_alert_threshold: 0.25
+  retrain_on_drift: true

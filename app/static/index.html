@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Network Anomaly Detector</title>
+<style>
+  :root{ --navy:#0E1E3D; --ink:#1B2A4A; --cyan:#00A9CE; --teal:#0C7C92;
+         --red:#D64545; --green:#2E8B57; --muted:#6B7280; --line:#E2E8F0; --bg:#F3F7FC; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+        background:var(--bg); color:var(--ink); }
+  header{ background:var(--navy); color:#fff; padding:26px 32px; }
+  header .k{ color:var(--cyan); font-weight:700; letter-spacing:2px; font-size:12px; }
+  header h1{ margin:6px 0 2px; font-size:26px; }
+  header p{ margin:0; color:#CADCFC; font-size:14px; }
+  .wrap{ max-width:960px; margin:24px auto; padding:0 20px; display:grid;
+         grid-template-columns:1fr 1fr; gap:20px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:20px;
+         box-shadow:0 1px 3px rgba(20,40,80,.06); }
+  .card h2{ margin:0 0 12px; font-size:16px; color:var(--navy); }
+  textarea{ width:100%; height:300px; font-family:ui-monospace,Menlo,Consolas,monospace;
+            font-size:12px; border:1px solid var(--line); border-radius:8px; padding:10px;
+            resize:vertical; color:#334155; }
+  .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  button{ border:0; border-radius:8px; padding:10px 16px; font-weight:600; font-size:14px;
+          cursor:pointer; }
+  .primary{ background:var(--cyan); color:#fff; }
+  .primary:hover{ background:var(--teal); }
+  .ghost{ background:#EAF2FA; color:var(--ink); }
+  .ghost:hover{ background:#dbe8f5; }
+  .result{ display:flex; flex-direction:column; align-items:center; justify-content:center;
+           min-height:300px; text-align:center; }
+  .verdict{ font-size:30px; font-weight:800; margin:6px 0; }
+  .attack{ color:var(--red); } .normal{ color:var(--green); }
+  .gauge{ width:220px; height:12px; background:#EEF2F7; border-radius:99px; overflow:hidden; margin:14px 0; }
+  .fill{ height:100%; width:0; transition:width .5s ease; }
+  .prob{ font-size:44px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .muted{ color:var(--muted); font-size:13px; }
+  .thr{ margin-top:10px; font-size:13px; color:var(--muted); }
+  input[type=range]{ width:180px; vertical-align:middle; }
+  footer{ text-align:center; color:var(--muted); font-size:12px; padding:16px; }
+  @media(max-width:760px){ .wrap{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="k">NETWORK INTRUSION DETECTION</div>
+  <h1>Network Anomaly Detector</h1>
+  <p>Score a network connection against the trained Random Forest model (UNSW-NB15).</p>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Connection features (JSON)</h2>
+    <textarea id="input" spellcheck="false"></textarea>
+    <div class="row">
+      <button class="ghost" onclick="loadSample('normal')">Load normal example</button>
+      <button class="ghost" onclick="loadSample('attack')">Load attack example</button>
+    </div>
+    <div class="thr">
+      Decision threshold: <span id="thrval">0.50</span><br/>
+      <input type="range" min="0.1" max="0.9" step="0.05" value="0.5"
+             oninput="document.getElementById('thrval').textContent=(+this.value).toFixed(2)"
+             id="thr"/>
+    </div>
+    <div class="row">
+      <button class="primary" onclick="score()">Score connection →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Result</h2>
+    <div class="result" id="result">
+      <div class="muted">Load an example and click <b>Score connection</b>.</div>
+    </div>
+  </div>
+</div>
+
+<footer>Model: Random Forest · recall 0.974 · PR-AUC 0.989 · served via FastAPI</footer>
+
+<script>
+const SAMPLES = {
+  normal: {"dur":0.0,"proto":"arp","service":"-","state":"INT","spkts":1,"dpkts":0,"sbytes":46,"dbytes":0,"rate":0.0,"sttl":0,"dttl":0,"sload":0.0,"dload":0.0,"sloss":0,"dloss":0,"sinpkt":60000.688,"dinpkt":0.0,"sjit":0.0,"djit":0.0,"swin":0,"stcpb":0,"dtcpb":0,"dwin":0,"tcprtt":0.0,"synack":0.0,"ackdat":0.0,"smean":46,"dmean":0,"trans_depth":0,"response_body_len":0,"ct_srv_src":2,"ct_state_ttl":2,"ct_dst_ltm":2,"ct_src_dport_ltm":2,"ct_dst_sport_ltm":2,"ct_dst_src_ltm":2,"is_ftp_login":0,"ct_ftp_cmd":0,"ct_flw_http_mthd":0,"ct_src_ltm":2,"ct_srv_dst":2,"is_sm_ips_ports":1},
+  attack: {"dur":9e-06,"proto":"sctp","service":"-","state":"INT","spkts":2,"dpkts":0,"sbytes":104,"dbytes":0,"rate":111111.1072,"sttl":254,"dttl":0,"sload":46222220.0,"dload":0.0,"sloss":0,"dloss":0,"sinpkt":0.009,"dinpkt":0.0,"sjit":0.0,"djit":0.0,"swin":0,"stcpb":0,"dtcpb":0,"dwin":0,"tcprtt":0.0,"synack":0.0,"ackdat":0.0,"smean":52,"dmean":0,"trans_depth":0,"response_body_len":0,"ct_srv_src":1,"ct_state_ttl":2,"ct_dst_ltm":2,"ct_src_dport_ltm":1,"ct_dst_sport_ltm":1,"ct_dst_src_ltm":2,"is_ftp_login":0,"ct_ftp_cmd":0,"ct_flw_http_mthd":0,"ct_src_ltm":1,"ct_srv_dst":1,"is_sm_ips_ports":0}
+};
+function loadSample(k){ document.getElementById('input').value = JSON.stringify(SAMPLES[k], null, 2); }
+loadSample('attack');
+
+async function score(){
+  const res = document.getElementById('result');
+  let body;
+  try { body = JSON.parse(document.getElementById('input').value); }
+  catch(e){ res.innerHTML = '<div class="muted" style="color:#D64545">Invalid JSON.</div>'; return; }
+  const thr = document.getElementById('thr').value;
+  res.innerHTML = '<div class="muted">Scoring…</div>';
+  try{
+    const r = await fetch('/predict?threshold='+thr, {method:'POST',
+      headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    const d = await r.json();
+    if(!r.ok){ throw new Error(d.detail || 'error'); }
+    const pct = (d.attack_probability*100).toFixed(1);
+    const isAtk = d.prediction===1;
+    const col = isAtk ? 'var(--red)' : 'var(--green)';
+    res.innerHTML =
+      '<div class="muted">Prediction</div>'+
+      '<div class="verdict '+(isAtk?'attack':'normal')+'">'+(isAtk?'⚠ ATTACK':'✓ NORMAL')+'</div>'+
+      '<div class="prob" style="color:'+col+'">'+pct+'%</div>'+
+      '<div class="muted">attack probability</div>'+
+      '<div class="gauge"><div class="fill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
+      '<div class="muted">threshold '+(+d.threshold).toFixed(2)+'</div>';
+  }catch(e){ res.innerHTML = '<div class="muted" style="color:#D64545">'+e.message+'</div>'; }
+}
+</script>
+</body>
+</html>

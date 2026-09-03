@@ -21,3 +21,6 @@ models/rf_smote_mitigated.joblib
 .DS_Store
 .idea/
 .vscode/
+
+# pytest
+.pytest_cache/

@@ -1,0 +1,11 @@
+data/
+notebooks/
+figures/
+reports/
+tests/
+.git/
+.github/
+__pycache__/
+*.pyc
+.venv/
+*.md
