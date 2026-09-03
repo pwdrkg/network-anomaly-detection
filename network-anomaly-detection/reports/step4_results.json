@@ -1,0 +1,51 @@
+{
+  "results": {
+    "Logistic Regression": {
+      "accuracy": 0.8476,
+      "precision": 0.8132,
+      "recall": 0.939,
+      "f1": 0.8716,
+      "roc_auc": 0.9596,
+      "pr_auc": 0.9698,
+      "train_sec": 13.0
+    },
+    "Decision Tree": {
+      "accuracy": 0.9097,
+      "precision": 0.8889,
+      "recall": 0.9554,
+      "f1": 0.921,
+      "roc_auc": 0.9611,
+      "pr_auc": 0.9514,
+      "train_sec": 2.0
+    },
+    "Random Forest": {
+      "accuracy": 0.9061,
+      "precision": 0.8711,
+      "recall": 0.9736,
+      "f1": 0.9195,
+      "roc_auc": 0.9854,
+      "pr_auc": 0.989,
+      "train_sec": 42.2
+    },
+    "XGBoost": {
+      "accuracy": 0.8996,
+      "precision": 0.8639,
+      "recall": 0.9705,
+      "f1": 0.9141,
+      "roc_auc": 0.9841,
+      "pr_auc": 0.9883,
+      "train_sec": 9.9
+    },
+    "Isolation Forest*": {
+      "accuracy": 0.7285,
+      "precision": 0.7535,
+      "recall": 0.7535,
+      "f1": 0.7535,
+      "roc_auc": 0.7944,
+      "pr_auc": 0.7996,
+      "train_sec": 1.2
+    }
+  },
+  "best_model": "Random Forest",
+  "test_prevalence": 0.5506
+}

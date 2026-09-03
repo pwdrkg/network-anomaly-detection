@@ -1,0 +1,23 @@
+# Data — do not commit the raw dataset or processed caches (see data/README.md)
+data/*.csv
+data/*.parquet
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Large model artifacts (regenerate with src/train.py, or use Git LFS)
+models/random_forest.joblib
+models/rf_for_shap.joblib
+models/rf_smote_mitigated.joblib
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,42 @@
+{
+  "psi_top": {
+    "ct_src_ltm": 0.11,
+    "ct_src_dport_ltm": 0.108,
+    "ct_dst_src_ltm": 0.07,
+    "ct_dst_ltm": 0.06,
+    "rate": 0.056,
+    "ct_srv_src": 0.052,
+    "ct_dst_sport_ltm": 0.051,
+    "sload": 0.05,
+    "ct_srv_dst": 0.048,
+    "sbytes": 0.039
+  },
+  "psi_major_count": 0,
+  "psi_moderate_count": 2,
+  "psi_stable_count": 67,
+  "baseline": {
+    "fuzzers_recall": 0.821,
+    "overall_recall": 0.9736,
+    "overall_precision": 0.8711,
+    "overall_f1": 0.9195
+  },
+  "threshold_value": 0.35,
+  "threshold_tuned": {
+    "fuzzers_recall": 0.9428,
+    "overall_recall": 0.9916,
+    "overall_precision": 0.8172,
+    "overall_f1": 0.896
+  },
+  "smote": {
+    "fuzzers_recall": 0.8078,
+    "overall_recall": 0.9721,
+    "overall_precision": 0.8691,
+    "overall_f1": 0.9177
+  },
+  "smote_added": {
+    "Analysis": 8000,
+    "Backdoor": 8000,
+    "Shellcode": 8000,
+    "Worms": 8000
+  }
+}

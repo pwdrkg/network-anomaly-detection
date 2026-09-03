@@ -1,0 +1,50 @@
+{
+  "family_recall": {
+    "Analysis": 0.9867,
+    "Backdoor": 1.0,
+    "DoS": 0.9978,
+    "Exploits": 0.9925,
+    "Fuzzers": 0.821,
+    "Generic": 0.9999,
+    "Reconnaissance": 0.9989,
+    "Shellcode": 0.9894,
+    "Worms": 1.0
+  },
+  "family_disparate_impact": 0.821,
+  "service_recall": {
+    "ftp": 0.9345,
+    "none": 0.9436,
+    "http": 0.9932,
+    "dns": 1.0,
+    "ftp-data": 1.0,
+    "pop3": 1.0,
+    "smtp": 1.0
+  },
+  "train_f1": 0.9797,
+  "test_f1": 0.9195,
+  "train_test_gap": 0.0602,
+  "adv_levels": [
+    0.0,
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.5
+  ],
+  "adv_f1": [
+    0.9195,
+    0.886,
+    0.8645,
+    0.848,
+    0.8346,
+    0.8047
+  ],
+  "adv_acc": [
+    0.9061,
+    0.8607,
+    0.8289,
+    0.8033,
+    0.7832,
+    0.7419
+  ]
+}
