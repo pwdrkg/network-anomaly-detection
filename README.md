@@ -144,7 +144,8 @@ The project follows the ML lifecycle end-to-end; the full write-up is in
 ## Deployment
 
 The model is served by a **FastAPI** app with a `/predict` endpoint and a small
-web UI. Full guide: [`DEPLOYMENT.md`](DEPLOYMENT.md).
+web UI. Full guide: [`DEPLOYMENT.md`](DEPLOYMENT.md); a screenshot walkthrough is
+in [`reports/Deployment_Demo.docx`](reports/).
 
 ```bash
 # local
@@ -186,6 +187,16 @@ parity across attack families**. The audit surfaced a real blind spot:
 - ✅ Local deployment via FastAPI with a `/predict` endpoint and web UI (see [DEPLOYMENT.md](DEPLOYMENT.md)).
 - Drift monitoring on connection-counter features; scheduled retraining.
 - Adversarial hardening (adversarial training, ensembles) and explanation-drift alerts.
+
+## Use of Generative AI
+
+Generative AI (Claude) was used as a development assistant — to draft the data
+dictionary and EDA summaries, scaffold pipeline/serving code, and draft the
+report and slides — always under human review, with every reported number
+grounded in a real code run. The repo also ships an optional GenAI feature,
+[`src/genai_explain.py`](src/genai_explain.py), which turns a prediction into a
+plain-language analyst triage note (the detector stays a plain, auditable model;
+the LLM only explains). Full write-up: [`reports/GenAI_Usage.docx`](reports/).
 
 ## License & citation
 
