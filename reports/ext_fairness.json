@@ -1,0 +1,37 @@
+{
+  "per_service": {
+    "dns": {
+      "tpr": 1.0,
+      "fpr": 0.0,
+      "n": 21367
+    },
+    "ftp": {
+      "tpr": 0.935,
+      "fpr": 0.328,
+      "n": 1552
+    },
+    "ftp-data": {
+      "tpr": 1.0,
+      "fpr": 0.0,
+      "n": 1396
+    },
+    "http": {
+      "tpr": 0.993,
+      "fpr": 0.197,
+      "n": 8287
+    },
+    "none": {
+      "tpr": 0.944,
+      "fpr": 0.201,
+      "n": 47153
+    },
+    "smtp": {
+      "tpr": 1.0,
+      "fpr": 0.0,
+      "n": 1851
+    }
+  },
+  "tpr_gap": 0.065,
+  "fpr_gap": 0.328,
+  "note": "Equalised odds requires similar TPR and FPR across groups; gaps quantify the disparity."
+}

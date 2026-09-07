@@ -7,6 +7,10 @@ imbalanced-learn>=0.12      # SMOTE (mitigations.py)
 
 # Explainability
 shap>=0.44
+lime>=0.2                   # local explanations (lime_explain.py)
+
+# Experiment tracking
+mlflow>=2.14               # run/metric/artifact logging (track_mlflow.py)
 
 # Visualisation
 matplotlib>=3.8

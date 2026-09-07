@@ -1,0 +1,34 @@
+{
+  "rfe_selected": [
+    "dbytes",
+    "sttl",
+    "dttl",
+    "dinpkt",
+    "sjit",
+    "djit",
+    "is_sm_ips_ports",
+    "ttl_diff",
+    "proto_freq",
+    "service_dhcp",
+    "service_dns",
+    "service_ftp",
+    "service_ftp-data",
+    "service_http",
+    "service_none",
+    "service_smtp",
+    "service_ssh",
+    "state_CON",
+    "state_ECO",
+    "state_INT",
+    "state_REQ"
+  ],
+  "overlap_with_embedded": [
+    "dinpkt",
+    "dttl",
+    "proto_freq",
+    "state_INT",
+    "sttl",
+    "ttl_diff"
+  ],
+  "n_overlap": 6
+}

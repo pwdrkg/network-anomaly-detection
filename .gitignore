@@ -24,3 +24,6 @@ models/rf_smote_mitigated.joblib
 
 # pytest
 .pytest_cache/
+
+# mlflow artifacts (db kept as evidence; artifact store regenerable)
+mlartifacts/
